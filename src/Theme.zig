@@ -4,6 +4,7 @@ const std = @import("std");
 const Color = dvui.Color;
 const Font = dvui.Font;
 const Options = dvui.Options;
+pub const Adwaita = @import("themes/Adwaita.zig");
 
 const Theme = @This();
 

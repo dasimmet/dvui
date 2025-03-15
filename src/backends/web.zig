@@ -28,6 +28,7 @@ pub var event_temps = std.ArrayList(EventTemp).init(gpa);
 
 pub const wasm = struct {
     pub extern fn wasm_about_webgl2() u8;
+    pub extern fn wasm_wants_dark_mode() bool;
 
     pub extern fn wasm_panic(ptr: [*]const u8, len: usize) void;
     pub extern fn wasm_log_write(ptr: [*]const u8, len: usize) void;

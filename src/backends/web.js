@@ -418,6 +418,9 @@ function dvui(canvasId, wasmFile) {
                 textInputRect = [];
             }
         },
+        wasm_wants_dark_mode() {
+            return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        },
         wasm_open_url: (ptr, len) => {
             let url = utf8decoder.decode(new Uint8Array(wasmResult.instance.exports.memory.buffer, ptr, len));
 	    window.open(url);

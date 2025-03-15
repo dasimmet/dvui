@@ -56,7 +56,16 @@ export fn app_init(platform_ptr: [*]const u8, platform_len: usize) i32 {
     backend = WebBackend.init() catch {
         return 1;
     };
-    win = dvui.Window.init(@src(), gpa, backend.backend(), .{ .keybinds = if (mac) .mac else .windows }) catch {
+
+    const default_theme = if (WebBackend.wasm.wasm_wants_dark_mode())
+        dvui.Theme.Adwaita.dark
+    else
+        dvui.Theme.Adwaita.light;
+
+    win = dvui.Window.init(@src(), gpa, backend.backend(), .{
+        .keybinds = if (mac) .mac else .windows,
+        .theme = &default_theme,
+    }) catch {
         return 2;
     };
 

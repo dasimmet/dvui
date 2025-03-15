@@ -2669,7 +2669,7 @@ pub const Window = struct {
     pub const InitOptions = struct {
         id_extra: usize = 0,
         arena: ?std.heap.ArenaAllocator = null,
-        theme: ?*Theme = null,
+        theme: ?*const Theme = null,
         keybinds: ?enum {
             none,
             windows,
@@ -2708,8 +2708,12 @@ pub const Window = struct {
             .themes = std.StringArrayHashMap(Theme).init(gpa),
         };
 
-        try self.themes.putNoClobber("Adwaita Light", @import("themes/Adwaita.zig").light);
-        try self.themes.putNoClobber("Adwaita Dark", @import("themes/Adwaita.zig").dark);
+        inline for (.{
+            Theme.Adwaita.light,
+            Theme.Adwaita.dark,
+        }) |builtin_theme| {
+            try self.themes.putNoClobber(builtin_theme.name, builtin_theme);
+        }
 
         inline for (@typeInfo(Theme.QuickTheme.builtin).@"struct".decls) |decl| {
             const quick_theme = Theme.QuickTheme.fromString(self.arena(), @field(Theme.QuickTheme.builtin, decl.name)) catch {
